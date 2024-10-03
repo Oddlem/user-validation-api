@@ -29,16 +29,17 @@ router.post("/sign-up", async (req, res) => {
         // if (username !== username || password !== password) {
         //     return res.status(400).send("Username or password are incorrect")
         // }
-    const { user_token } = await user_authentication(username, password) 
-
+    // const { user_token } = await user_authentication(username, password) 
+    const token_result = await user_authentication(req.query)
 
     const result = await create_user(req.query).catch(err => {
         if (err.code === '23505') {
             return res.status(400).send("Username already exists")
-        } 
-    
+        }   
     })
+    
     return res.status(200).send(result.rows)
+    
 })
 
 router.get("/protected", (req, res) => {

@@ -31,10 +31,28 @@ const create_user_table = async function (data) {
         )`)
 }
 
+const create_token_table = async function (data) {
+    const sql = await pool.query(`CREATE TABLE IF NOT EXISTS user_tokens(
+        user_id uuid unique,
+        id uuid,
+        token text,
+        created_at timestamp,
+        updated_at timestamp,
+        deleted_at timestamp
+        )`)
+
+}
+
 database().then(() => {
     return create_user_table()
 })
 .then(() => {console.log("Users table already created")})
+.catch(err => console.log(err))
+
+database().then(() => {
+    return create_token_table()
+})
+.then(() => {console.log("User_tokens table already created")})
 .catch(err => console.log(err))
 
 module.exports = { pool }
